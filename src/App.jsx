@@ -1,4 +1,5 @@
 import {
+  Dock,
   Navbar,
   Welcome
 } from "@components";
@@ -8,6 +9,7 @@ const App = () => {
     <main>
       <Navbar />
       <Welcome />
+      <Dock />
     </main>
   )
 }
