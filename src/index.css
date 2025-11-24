@@ -105,7 +105,7 @@ body {
     }
   }
 
-  #window-controls {
+#window-controls {
     @apply flex gap-2;
 
     .close {
@@ -124,6 +124,18 @@ body {
   #window-header {
     @apply flex items-center justify-between px-4 py-3 rounded-t-lg bg-gray-50 border-b border-gray-200 select-none text-sm text-gray-400;
   }
+
+  /* 🔥 FIX — enable button clicks */
+  #window-header * {
+    pointer-events: none;
+  }
+
+  #window-controls,
+  #window-controls * {
+    pointer-events: auto !important;
+    cursor: pointer;
+  }
+
 
   #safari {
    @apply max-w-4xl absolute top-40 left-1/2 -translate-x-1/2 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
@@ -344,7 +356,7 @@ body {
       @apply flex-1 p-8 bg-white max-w-2xl relative;
 
       li {
-        @apply absolute flex items-center flex-col gap-3;
+        @apply flex items-center flex-col gap-3;
 
         img {
           @apply object-contain object-center size-16 relative group-hover:scale-105;
