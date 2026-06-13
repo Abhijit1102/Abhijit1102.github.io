@@ -1,0 +1,53 @@
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 720px) {
+  body {
+    padding: 0;
+  }
+
+  #terminal {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  #output {
+    padding: 12px 12px 6px;
+    font-size: 13px;
+  }
+
+  .ascii-banner {
+    font-size: 7px;
+  }
+
+  .skill-row {
+    grid-template-columns: 96px 1fr 36px;
+    gap: 6px;
+  }
+
+  .input-line {
+    padding: 8px 12px 14px;
+  }
+
+  #boot-text {
+    font-size: 11px;
+  }
+
+  .help-table {
+    grid-template-columns: 1fr;
+    gap: 0 0;
+  }
+
+  .help-cmd {
+    margin-top: 6px;
+  }
+}
+
+@media (max-width: 380px) {
+  .ascii-banner {
+    font-size: 5.5px;
+  }
+}
