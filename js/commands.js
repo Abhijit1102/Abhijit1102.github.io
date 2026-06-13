@@ -292,9 +292,11 @@ COMMANDS.contact = function () {
 /* ---------- resume ---------- */
 
 COMMANDS.resume = function () {
+  const path = "assets/resume.pdf";
+  window.open(path, "_blank");
   return [
-    textLine("Opening resume...", "accent"),
-    textLine("-> resume.pdf (placeholder link — replace with your hosted resume URL)", "link"),
+    textLine("Opening resume.pdf in a new tab...", "accent"),
+    htmlBlock(`<div class="out-dim">If it didn't open, click here: <a class="out-link" href="${path}" target="_blank" rel="noopener">${path}</a></div>`),
     blank(),
     textLine("Or browse: about, experience, projects, skills, education, certs", "dim"),
   ];
