@@ -45,7 +45,9 @@ COMMANDS.help = function () {
     ["education",   "academic background"],
     ["certs",       "certifications"],
     ["contact",     "how to reach me"],
+    ["social",      "links to GitHub, LinkedIn, etc."],
     ["resume",      "download / view full resume"],
+    ["neofetch",    "system info, portfolio-style"],
     ["whoami",      "quick identity check"],
     ["banner",      "redraw the name banner"],
     ["theme",       "switch color theme (matrix / amber / classic)"],
@@ -296,10 +298,74 @@ COMMANDS.resume = function () {
   window.open(path, "_blank");
   return [
     textLine("Opening resume.pdf in a new tab...", "accent"),
-    htmlBlock(`<div class="out-dim">If it didn't open, click here: <a class="out-link" href="${path}" target="_blank" rel="noopener">${path}</a></div>`),
+    htmlBlock(
+      `<div class="out-dim">If it didn't open: ` +
+      `<a class="out-link" href="${path}" target="_blank" rel="noopener">view</a> · ` +
+      `<a class="out-link" href="${path}" download="${PORTFOLIO_DATA.meta.name.replace(/\s+/g, "_")}_Resume.pdf">download</a>` +
+      `</div>`
+    ),
     blank(),
     textLine("Or browse: about, experience, projects, skills, education, certs", "dim"),
   ];
+};
+
+/* ---------- social ---------- */
+
+COMMANDS.social = function () {
+  const m = PORTFOLIO_DATA.meta;
+  const items = [
+    { label: "GitHub", url: m.links.github, icon: "⌥" },
+    { label: "LinkedIn", url: m.links.linkedin, icon: "in" },
+    { label: "Portfolio", url: m.links.portfolio, icon: "◆" },
+    { label: "Email", url: `mailto:${m.email}`, icon: "@" },
+  ];
+
+  let html = `<div class="social-grid">`;
+  items.forEach((item) => {
+    html += `<a class="social-card" href="${item.url}" target="_blank" rel="noopener">`
+      + `<span class="social-icon">${item.icon}</span>`
+      + `<span class="social-label">${escapeHtml(item.label)}</span>`
+      + `</a>`;
+  });
+  html += `</div>`;
+
+  return [
+    textLine("Find me online:", "heading"),
+    blank(),
+    htmlBlock(html),
+  ];
+};
+
+/* ---------- neofetch ---------- */
+
+COMMANDS.neofetch = function () {
+  const m = PORTFOLIO_DATA.meta;
+  const skillCount = Object.values(PORTFOLIO_DATA.skills).reduce((n, arr) => n + arr.length, 0);
+
+  const info = [
+    ["OS", "PortfolioOS v2.6.1 (web)"],
+    ["Host", "abhijit-portfolio"],
+    ["User", m.name],
+    ["Role", m.role],
+    ["Location", m.location],
+    ["Uptime", `${PORTFOLIO_DATA.experience.length} jobs, ${PORTFOLIO_DATA.projects.length} shipped projects`],
+    ["Packages", `${skillCount} skills installed`],
+    ["Shell", "interactive-portfolio.sh"],
+    ["Resolution", `${window.innerWidth}x${window.innerHeight}`],
+    ["CPU", "Coffee-fueled, 1 core, mostly idle until 11pm"],
+  ];
+
+  let rows = "";
+  info.forEach(([k, v]) => {
+    rows += `<div class="neofetch-key">${escapeHtml(k)}</div><div class="neofetch-val">${escapeHtml(v)}</div>`;
+  });
+
+  const html = `<div class="neofetch">
+    <pre class="neofetch-art">${escapeHtml(PORTFOLIO_DATA.asciiName)}</pre>
+    <div class="neofetch-info">${rows}</div>
+  </div>`;
+
+  return [htmlBlock(html)];
 };
 
 /* ---------- clear ---------- */

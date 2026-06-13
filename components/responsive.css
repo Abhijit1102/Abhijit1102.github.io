@@ -53,6 +53,15 @@
     flex-direction: column;
     gap: 4px;
   }
+
+  .neofetch {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .neofetch-art {
+    font-size: 6px;
+  }
 }
 
 @media (max-width: 380px) {

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Abhijit Rajkumar — AI/ML Engineer & Full-Stack Developer. Interactive terminal portfolio." />
+  <meta name="theme-color" content="#0b0e0c" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%230b0e0c%22/><text x=%2250%22 y=%2268%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22%235ef2a0%22 font-family=%22monospace%22>&gt;_</text></svg>" />
   <title>abhijit@portfolio:~</title>
   <link rel="stylesheet" href="css/reset.css" />
   <link rel="stylesheet" href="css/terminal.css" />
@@ -34,7 +37,7 @@
     </header>
 
     <!-- Output history -->
-    <main id="output" aria-live="polite"></main>
+    <main id="output"></main>
 
     <!-- Input line -->
     <div class="input-line">
@@ -48,6 +51,9 @@
       </span>
     </div>
   </div>
+
+  <!-- Screen-reader announcements: updated once per command, not per character -->
+  <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
   <!-- Hidden helper for screen readers describing how to use the site -->
   <p class="sr-only">This is an interactive terminal portfolio. Type "help" and press Enter to see available commands.</p>

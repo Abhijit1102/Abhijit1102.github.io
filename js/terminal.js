@@ -151,19 +151,44 @@
     removeThinking(thinkingEl);
 
     if (!handler) {
-      await appendLinesAnimated(unknownCommand(cmd));
+      const lines = unknownCommand(cmd);
+      await appendLinesAnimated(lines);
+      announce(summarizeLines(lines));
     } else {
       const result = handler(args);
       if (result && result.clear) {
         output.innerHTML = "";
       } else {
         await appendLinesAnimated(result);
+        announce(summarizeLines(result));
       }
     }
 
     isRunning = false;
     animateSkillBars();
     scrollToBottom();
+  }
+
+  const announcer = document.getElementById("sr-announcer");
+
+  function announce(text) {
+    if (!announcer) return;
+    announcer.textContent = "";
+    // Reset then set on next tick so repeated identical text still announces
+    requestAnimationFrame(() => {
+      announcer.textContent = text;
+    });
+  }
+
+  function summarizeLines(lines) {
+    return lines
+      .map((l) => {
+        if (l.type === "text") return l.content;
+        if (l.type === "html") return l.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+        return "";
+      })
+      .filter(Boolean)
+      .join(". ");
   }
 
 
