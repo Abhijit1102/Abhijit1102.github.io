@@ -35,6 +35,7 @@ const PORTFOLIO_DATA = {
   projects: [
     {
       name: "GitHawk",
+      slug: "githawk",
       tagline: "AI-powered GitHub PR reviewer — open-source CodeRabbit alternative",
       stack: ["Next.js", "Better Auth", "Pinecone", "Gemini AI", "Inngest", "Polar", "PostgreSQL"],
       links: { github: "#", demo: "#" },
@@ -43,10 +44,38 @@ const PORTFOLIO_DATA = {
         "RAG pipeline with Pinecone embeddings indexes entire repo codebases for context-aware reviews.",
         "Inngest job fetches PR diffs, runs vector search, and generates structured reviews with Gemini 2.5 Flash — walkthrough, Mermaid diagrams, bug analysis, suggestions — posted as inline PR comments with concurrency control and retries.",
         "Integrated Polar for subscriptions; separate index-repo function embeds repo files into Pinecone on first connect."
-      ]
+      ],
+      diagram: String.raw`
+  GitHub PR opened
+        |
+        v
+  +--------------+      +----------------+
+  |  Next.js app | ---> |  Inngest job    |
+  |  (Better     |      |  (PR diff +     |
+  |   Auth)      |      |   vector search)|
+  +--------------+      +----------------+
+        |                       |
+        |                       v
+        |               +----------------+
+        |               |   Pinecone DB   |
+        |               | (repo embeddings)|
+        |               +----------------+
+        |                       |
+        |                       v
+        |               +----------------+
+        |               | Gemini 2.5 Flash |
+        |               | review + diagram |
+        +-------------->| + suggestions    |
+                         +----------------+
+                                 |
+                                 v
+                       Inline PR comment
+                       (retries + concurrency
+                        control via Inngest)`
     },
     {
       name: "v0-clone",
+      slug: "v0-clone",
       tagline: "AI UI generation platform inspired by v0.dev",
       stack: ["Next.js", "Inngest Agent Kit", "GPT-4.1", "E2B Sandboxes", "Clerk", "PostgreSQL"],
       links: { github: "#", demo: "#" },
@@ -55,10 +84,43 @@ const PORTFOLIO_DATA = {
         "Inngest Agent Kit coding agent (GPT-4.1-mini) with terminal, createOrUpdateFiles, and readFiles tools autonomously scaffolds, writes, installs, and debugs code inside E2B sandboxes.",
         "Sandbox reuse logic reconnects to existing E2B sandboxes across turns, preserving node_modules and file state to skip redundant reinstalls.",
         "Every generation persisted as a Fragment (file snapshot + live URL) linked to a project message thread for full multi-turn refinement history via Prisma/PostgreSQL."
-      ]
+      ],
+      diagram: String.raw`
+  User prompt ("add a login form")
+        |
+        v
+  +----------------+
+  |   Next.js app   |  (Clerk auth)
+  +----------------+
+        |
+        v
+  +-------------------------+
+  | Inngest Agent Kit agent  |
+  | (GPT-4.1-mini)           |
+  |  tools: terminal,        |
+  |  createOrUpdateFiles,    |
+  |  readFiles               |
+  +-------------------------+
+        |
+        v
+  +-------------------------+
+  |   E2B cloud sandbox      |
+  |  (reused across turns -> |
+  |   node_modules preserved)|
+  +-------------------------+
+        |
+        v
+  Live preview URL
+        |
+        v
+  Saved as "Fragment"
+  (file snapshot + URL)
+  --> Prisma/PostgreSQL
+  --> multi-turn history`
     },
     {
       name: "Patho-Predict",
+      slug: "patho-predict",
       tagline: "Genomic variant pathogenicity prediction platform",
       stack: ["Next.js", "Modal", "FastAPI", "Biopython", "UCSC API", "ClinVar", "Pinecone"],
       links: { github: "#", demo: "#" },
@@ -67,7 +129,40 @@ const PORTFOLIO_DATA = {
         "Modal serverless FastAPI endpoint fetches the reference base from UCSC Genome Browser, translates the codon change to an amino acid substitution with Biopython, and scores it across three signals.",
         "Weighted scoring model: risk = 0.45 x CADD + 0.35 x ESM-proxy + 0.20 x Conservation, thresholded into Likely Pathogenic / Uncertain Significance / Likely Benign.",
         "ClinVar overlays, gene sequence visualization, and 7 Next.js API routes consuming UCSC/NCBI — supports any UCSC genome assembly (hg38, hg19, mm39, etc.)."
-      ]
+      ],
+      diagram: String.raw`
+  Input: chr position + alt base
+        |
+        v
+  +-------------------------+
+  |   Next.js frontend        |
+  | (7 API routes, sequence    |
+  |  visualization, ClinVar    |
+  |  overlays)                  |
+  +-------------------------+
+        |
+        v
+  +-------------------------+
+  | Modal serverless FastAPI  |
+  +-------------------------+
+        |
+        +--> UCSC Genome Browser API -> reference base
+        |
+        +--> Biopython -> codon -> amino acid substitution
+        |
+        v
+  +-------------------------+
+  |   Weighted scoring model  |
+  |  risk = 0.45*CADD          |
+  |       + 0.35*ESM-proxy     |
+  |       + 0.20*Conservation  |
+  +-------------------------+
+        |
+        v
+  Likely Pathogenic /
+  Uncertain Significance /
+  Likely Benign
+  (+ ClinVar evidence)`
     }
   ],
 

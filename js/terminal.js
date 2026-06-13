@@ -311,6 +311,55 @@
     input.focus();
   });
 
+  /* ---------- konami code easter egg ---------- */
+
+  const KONAMI_SEQUENCE = [
+    "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
+    "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight",
+    "b", "a",
+  ];
+  let konamiProgress = 0;
+  let konamiUnlocked = false;
+
+  window.addEventListener("keydown", (e) => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    const expected = KONAMI_SEQUENCE[konamiProgress];
+
+    if (key === expected) {
+      konamiProgress++;
+      if (konamiProgress === KONAMI_SEQUENCE.length) {
+        konamiProgress = 0;
+        if (!konamiUnlocked) {
+          konamiUnlocked = true;
+          triggerKonamiEasterEgg();
+        }
+      }
+    } else {
+      // Allow restarting the sequence from the matching first key
+      konamiProgress = (key === KONAMI_SEQUENCE[0]) ? 1 : 0;
+    }
+  });
+
+  async function triggerKonamiEasterEgg() {
+    const root = document.documentElement;
+    root.classList.add("konami-active");
+
+    appendEcho("??? — 30 lives granted");
+
+    await appendLinesAnimated([
+      textLine("Cheat code accepted.", "accent"),
+      textLine("Unlocked: developer mode, infinite coffee, rainbow prompt.", "dim"),
+      blank(),
+      textLine("(this is purely cosmetic — type anything to continue)", "dim"),
+    ]);
+    scrollToBottom();
+
+    setTimeout(() => {
+      root.classList.remove("konami-active");
+      konamiUnlocked = false;
+    }, 6000);
+  }
+
   /* ---------- clock ---------- */
 
   function tickClock() {

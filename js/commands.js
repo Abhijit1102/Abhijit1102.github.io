@@ -39,6 +39,7 @@ COMMANDS.help = function () {
     ["help",        "show this list of commands"],
     ["about",       "who I am, in short"],
     ["projects",    "selected projects with details"],
+    ["man <proj>",  "manual page with architecture diagram"],
     ["experience",  "work history"],
     ["skills",      "technical skills with proficiency bars"],
     ["education",   "academic background"],
@@ -130,7 +131,69 @@ function renderProject(p, expanded) {
   return [htmlBlock(html)];
 }
 
-/* ---------- experience ---------- */
+/* ---------- man (project manual pages with ASCII diagrams) ---------- */
+
+COMMANDS.man = function (args) {
+  if (!args || !args.length) {
+    return [
+      textLine("What manual page do you want?", "error"),
+      textLine("Usage: man <project>", "dim"),
+      textLine(
+        `Available: ${PORTFOLIO_DATA.projects.map((p) => p.slug).join(", ")}`,
+        "dim"
+      ),
+    ];
+  }
+
+  const query = args.join(" ").toLowerCase();
+  const project = PORTFOLIO_DATA.projects.find(
+    (p) => p.slug === query || p.name.toLowerCase().includes(query)
+  );
+
+  if (!project) {
+    return [
+      textLine(`No manual entry for ${args.join(" ")}`, "error"),
+      textLine(
+        `Try: ${PORTFOLIO_DATA.projects.map((p) => p.slug).join(", ")}`,
+        "dim"
+      ),
+    ];
+  }
+
+  const tags = project.stack
+    .map((s) => `<span class="tag">${escapeHtml(s)}</span>`)
+    .join("");
+
+  let html = `<div class="man-page">`;
+  html += `<div class="man-header">${escapeHtml(project.slug.toUpperCase())}(1)`
+    + `<span class="man-header-section">Project Manual</span></div>`;
+
+  html += `<div class="man-section-title">NAME</div>`;
+  html += `<div class="man-body">${escapeHtml(project.name)} — ${escapeHtml(project.tagline)}</div>`;
+
+  html += `<div class="man-section-title">SYNOPSIS</div>`;
+  html += `<div class="man-body">${tags}</div>`;
+
+  html += `<div class="man-section-title">DESCRIPTION</div>`;
+  html += `<ul class="man-body">`;
+  project.bullets.forEach((b) => (html += `<li>${escapeHtml(b)}</li>`));
+  html += `</ul>`;
+
+  if (project.diagram) {
+    html += `<div class="man-section-title">ARCHITECTURE</div>`;
+    html += `<pre class="man-diagram">${escapeHtml(project.diagram.trim())}</pre>`;
+  }
+
+  html += `<div class="man-section-title">SEE ALSO</div>`;
+  html += `<div class="man-body out-dim">github: <span class="out-link">${project.links.github}</span> · demo: <span class="out-link">${project.links.demo}</span></div>`;
+
+  html += `<div class="man-footer">END — press any key to continue</div>`;
+  html += `</div>`;
+
+  return [htmlBlock(html)];
+};
+
+
 
 COMMANDS.experience = function () {
   const out = [textLine("Work experience:", "heading"), blank()];

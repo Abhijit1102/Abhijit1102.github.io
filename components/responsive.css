@@ -44,6 +44,15 @@
   .help-cmd {
     margin-top: 6px;
   }
+
+  .man-diagram {
+    font-size: 9px;
+  }
+
+  .man-header {
+    flex-direction: column;
+    gap: 4px;
+  }
 }
 
 @media (max-width: 380px) {

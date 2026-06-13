@@ -425,8 +425,125 @@ body {
 }
 
 /* ============================================
-   ANIMATIONS — terminal flair
+   KONAMI EASTER EGG
+   Cosmetic rainbow celebration mode
    ============================================ */
+
+@keyframes konami-rainbow {
+  0%   { color: #ff6b6b; }
+  20%  { color: #ffd166; }
+  40%  { color: #5ef2a0; }
+  60%  { color: #7aa2ff; }
+  80%  { color: #c77dff; }
+  100% { color: #ff6b6b; }
+}
+
+html.konami-active .prompt-user,
+html.konami-active .prompt-host,
+html.konami-active .prompt-path,
+html.konami-active .cursor-block,
+html.konami-active .echo-prompt {
+  animation: konami-rainbow 2s linear infinite;
+}
+
+html.konami-active .cursor-block {
+  background: currentColor;
+  box-shadow: 0 0 10px currentColor;
+}
+
+html.konami-active #terminal {
+  box-shadow:
+    0 0 0 1px rgba(94, 242, 160, 0.04),
+    0 30px 80px -20px rgba(0, 0, 0, 0.8),
+    0 0 60px -6px rgba(255, 209, 102, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.konami-active .prompt-user,
+  html.konami-active .prompt-host,
+  html.konami-active .prompt-path,
+  html.konami-active .cursor-block,
+  html.konami-active .echo-prompt {
+    animation: none;
+    color: var(--accent-2);
+  }
+}
+
+
+
+.man-page {
+  border: 1px solid #1f2a23;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.015);
+  padding: 14px 16px;
+  margin: 4px 0 12px;
+}
+
+.man-header {
+  display: flex;
+  justify-content: space-between;
+  color: var(--accent-2);
+  font-weight: 700;
+  border-bottom: 1px dashed #1f2a23;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+
+.man-header-section {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.man-section-title {
+  color: var(--accent);
+  font-weight: 700;
+  margin: 12px 0 4px;
+  letter-spacing: 0.08em;
+}
+
+.man-body {
+  color: var(--fg);
+  padding-left: 4px;
+}
+
+.man-body ul,
+ul.man-body {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.man-body li {
+  margin-bottom: 4px;
+}
+
+.man-body li::marker {
+  color: var(--accent);
+}
+
+.man-diagram {
+  color: var(--accent-3);
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre;
+  overflow-x: auto;
+  padding: 8px 0 4px 4px;
+  margin: 0;
+}
+
+.man-footer {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px dashed #1f2a23;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+
 
 /* Fade/slide in for rich HTML blocks (entries, tables, banners) */
 .fade-in-block {
