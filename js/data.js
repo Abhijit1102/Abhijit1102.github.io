@@ -14,9 +14,9 @@ const PORTFOLIO_DATA = {
     email: "abhijitrajkumar2@gmail.com",
     phone: "+91 7005157909",
     links: {
-      linkedin: "#",
-      portfolio: "#",
-      github: "#"
+      linkedin: "www.linkedin.com/in/rkabhijit",
+      portfolio: "https://abhijit1102.github.io",
+      github: "https://github.com/Abhijit1102"
     }
   },
 

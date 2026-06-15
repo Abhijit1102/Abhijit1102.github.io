@@ -2,7 +2,7 @@
 
 > An interactive Linux terminal–style portfolio — built with plain HTML, CSS & JS. No frameworks, no build tools, zero dependencies.
 
-**[🚀 Live Demo →](https://yourusername.github.io/portfolio)**
+**[🚀 Live Demo →](https://abhijit1102.github.io)**
 
 ---
 
@@ -90,7 +90,7 @@ sudo          # try it 😏
 
 ```bash
 git init
-git remote add origin https://github.com/YOUR_USERNAME/portfolio.git
+git remote add origin https://github.com/abhijit1102/portfolio.git
 ```
 
 ### 2. Commit all files
@@ -111,7 +111,7 @@ git push -u origin main
 
 Your site will be live at:
 ```
-https://abhijit1102.io/portfolio
+https://abhijit1102.github.io
 ```
 
 > ⏱️ First deploy takes ~1–2 minutes. Subsequent pushes update within 30 seconds.
@@ -136,9 +136,9 @@ meta: {
   email: "abhijitrajkumar2@gmail.com",
   phone: "+91 7005157909",
   links: {
-    linkedin: "https://linkedin.com/in/YOUR_HANDLE",
-    portfolio: "https://YOUR_PORTFOLIO.com",
-    github: "https://github.com/YOUR_USERNAME"
+    linkedin: "www.linkedin.com/in/rkabhijit",
+    portfolio: "https://abhijit1102.github.io",
+    github: "https://github.com/abhijit1102"
   }
 }
 ```
