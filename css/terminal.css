@@ -306,11 +306,13 @@ body {
 
 .ascii-banner {
   color: var(--accent);
-  font-size: 11px;
+  font-size: 9.5px;
   line-height: 1.25;
   margin: 4px 0 12px;
   text-shadow: 0 0 8px rgba(94, 242, 160, 0.25);
   white-space: pre;
+  overflow-x: auto;
+  display: block;
 }
 
 /* ---- Project / job cards rendered as text blocks ---- */
