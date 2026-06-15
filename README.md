@@ -111,7 +111,7 @@ git push -u origin main
 
 Your site will be live at:
 ```
-https://YOUR_USERNAME.github.io/portfolio
+https://abhijit1102.io/portfolio
 ```
 
 > ⏱️ First deploy takes ~1–2 minutes. Subsequent pushes update within 30 seconds.
