@@ -259,6 +259,49 @@ body {
   margin: 10px 0;
 }
 
+/* ---- Rainbow ASCII banner ---- */
+
+.rainbow-banner {
+  /* override the single accent colour */
+  color: unset;
+  text-shadow: none;
+}
+
+.rainbow-banner .rb {
+  color: hsl(calc(var(--hue) + var(--rb-offset, 0deg)), 90%, 68%);
+  animation: rb-hue-shift 4s linear infinite;
+  animation-delay: calc(var(--hue) * -0.011s); /* stagger per char */
+  display: inline;
+}
+
+@keyframes rb-hue-shift {
+  from { --rb-offset: 0deg;   }
+  to   { --rb-offset: 360deg; }
+}
+
+@supports not (color: hsl(calc(1deg), 1%, 1%)) {
+  /* Fallback for browsers that don't support calc() inside hsl() */
+  .rainbow-banner .rb {
+    animation: rb-hue-shift-fallback 4s linear infinite;
+    animation-delay: calc(var(--hue) * -0.011s);
+  }
+  @keyframes rb-hue-shift-fallback {
+    0%   { color: #ff6b6b; }
+    20%  { color: #ffd166; }
+    40%  { color: #5ef2a0; }
+    60%  { color: #7aa2ff; }
+    80%  { color: #c77dff; }
+    100% { color: #ff6b6b; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rainbow-banner .rb {
+    animation: none;
+    color: hsl(var(--hue), 85%, 65%);
+  }
+}
+
 /* ---- ASCII banner ---- */
 
 .ascii-banner {

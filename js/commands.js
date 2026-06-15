@@ -377,8 +377,24 @@ COMMANDS.clear = function () {
 /* ---------- banner ---------- */
 
 COMMANDS.banner = function () {
+  // Build rainbow spans inline
+  const text = PORTFOLIO_DATA.asciiName;
+  let pre = `<pre class="ascii-banner rainbow-banner">`;
+  let charIndex = 0;
+  for (const ch of text) {
+    if (ch === "\n") {
+      pre += "\n";
+    } else if (ch === " ") {
+      pre += " ";
+    } else {
+      const hue = (charIndex * 4.7) % 360;
+      pre += `<span class="rb" style="--hue:${hue.toFixed(1)}">${escapeHtml(ch)}</span>`;
+      charIndex++;
+    }
+  }
+  pre += `</pre>`;
   return [
-    htmlBlock(`<pre class="ascii-banner">${escapeHtml(PORTFOLIO_DATA.asciiName)}</pre>`),
+    htmlBlock(pre),
     textLine(`${PORTFOLIO_DATA.meta.role}`, "accent"),
     textLine('Type "help" to get started.', "dim"),
   ];

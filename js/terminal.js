@@ -398,11 +398,36 @@
   tickClock();
   setInterval(tickClock, 1000);
 
+  /* ---------- rainbow banner ---------- */
+
+  function buildRainbowBanner(text) {
+    const pre = document.createElement("pre");
+    pre.className = "ascii-banner glitch-in rainbow-banner";
+
+    let charIndex = 0;
+    for (const ch of text) {
+      if (ch === "\n") {
+        pre.appendChild(document.createTextNode("\n"));
+      } else if (ch === " ") {
+        pre.appendChild(document.createTextNode(" "));
+      } else {
+        const span = document.createElement("span");
+        span.className = "rb";
+        // Spread hue across 0-360 using character index, animate offset via CSS var
+        span.style.setProperty("--hue", (charIndex * 4.7) % 360);
+        span.textContent = ch;
+        pre.appendChild(span);
+        charIndex++;
+      }
+    }
+    return pre;
+  }
+
   /* ---------- initial content ---------- */
 
   async function showWelcome() {
     const bannerDiv = document.createElement("div");
-    bannerDiv.innerHTML = `<pre class="ascii-banner glitch-in">${escapeHtml(PORTFOLIO_DATA.asciiName)}</pre>`;
+    bannerDiv.appendChild(buildRainbowBanner(PORTFOLIO_DATA.asciiName));
     output.appendChild(bannerDiv);
 
     await appendLinesAnimated([
