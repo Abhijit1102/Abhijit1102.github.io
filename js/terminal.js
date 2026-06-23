@@ -30,8 +30,10 @@
 
   /* ---------- typewriter effect ---------- */
 
-  // Speed in ms per character for plain text lines.
-  const TYPE_SPEED = 6;
+  // FIX 1: Reduced from 6ms to 2ms per character.
+  // At 6ms a 60-char line took ~360ms just to type out.
+  // 2ms keeps the effect visible without the noticeable lag.
+  const TYPE_SPEED = 2; // ← CHANGED (was 6)
 
   function typeText(el, text, speed) {
     return new Promise((resolve) => {
@@ -44,7 +46,6 @@
         el.textContent += text.charAt(i);
         i++;
         if (i < text.length) {
-          // Skip the wait if the user presses Enter to fast-forward
           setTimeout(step, speed);
         } else {
           resolve();
@@ -105,7 +106,6 @@
     if (el && el.parentNode) el.parentNode.removeChild(el);
   }
 
-
   function animateSkillBars() {
     const bars = output.querySelectorAll(".skill-bar-fill[data-level]");
     bars.forEach((bar) => {
@@ -122,7 +122,9 @@
 
   let isRunning = false;
 
-  async function runCommand(raw) {
+  // FIX 2: Added skipThinking option so the auto-triggered "help" on startup
+  // does not wait 150–350ms before showing output.
+  async function runCommand(raw, { skipThinking = false } = {}) { // ← CHANGED signature
     const trimmed = raw.trim();
     if (!trimmed) return;
 
@@ -146,9 +148,13 @@
 
     isRunning = true;
     fastForward = false;
-    const thinkingEl = showThinking();
-    await sleep(150 + Math.random() * 200);
-    removeThinking(thinkingEl);
+
+    // FIX 2 (continued): Only show the thinking delay for real user commands.
+    if (!skipThinking) { // ← CHANGED (was unconditional)
+      const thinkingEl = showThinking();
+      await sleep(150 + Math.random() * 200);
+      removeThinking(thinkingEl);
+    }
 
     if (!handler) {
       const lines = unknownCommand(cmd);
@@ -174,7 +180,6 @@
   function announce(text) {
     if (!announcer) return;
     announcer.textContent = "";
-    // Reset then set on next tick so repeated identical text still announces
     requestAnimationFrame(() => {
       announcer.textContent = text;
     });
@@ -190,7 +195,6 @@
       .filter(Boolean)
       .join(". ");
   }
-
 
   /* ---------- matrix rain easter egg ---------- */
 
@@ -267,15 +271,12 @@
     overlay.addEventListener("click", close);
     window.addEventListener("resize", resize);
 
-    // Auto-close after a while in case the user just watches
     if (autoCloseMs) {
       setTimeout(close, autoCloseMs);
     }
 
     return close;
   }
-
-
 
   function updateMirror() {
     mirror.textContent = input.value;
@@ -331,7 +332,6 @@
     }
   });
 
-  // Keep focus on input wherever the user clicks within the terminal
   document.getElementById("terminal").addEventListener("click", () => {
     input.focus();
   });
@@ -360,7 +360,6 @@
         }
       }
     } else {
-      // Allow restarting the sequence from the matching first key
       konamiProgress = (key === KONAMI_SEQUENCE[0]) ? 1 : 0;
     }
   });
@@ -413,7 +412,6 @@
       } else {
         const span = document.createElement("span");
         span.className = "rb";
-        // Spread hue across 0-360 using character index, animate offset via CSS var
         span.style.setProperty("--hue", (charIndex * 4.7) % 360);
         span.textContent = ch;
         pre.appendChild(span);
@@ -430,16 +428,21 @@
     bannerDiv.appendChild(buildRainbowBanner(PORTFOLIO_DATA.asciiName));
     output.appendChild(bannerDiv);
 
+    // FIX 3: Render the welcome lines instantly (no typewriter effect).
+    // The banner animation already gives plenty of visual flair on load;
+    // typing out the tagline and hint on top of that just adds dead time.
+    fastForward = true; // ← CHANGED (was not set here)
     await appendLinesAnimated([
       textLine(`${PORTFOLIO_DATA.meta.role}`, "accent"),
       textLine(`${PORTFOLIO_DATA.meta.location}`, "dim"),
       blank(),
       textLine('Type "help" to see available commands, or try: about, projects, skills, contact', "dim"),
     ]);
+    fastForward = false; // ← CHANGED (restore for subsequent user commands)
     scrollToBottom();
 
-    // Auto-trigger "help" so visitors immediately see what's available
-    await runCommand("help");
+    // FIX 2 (applied here): Skip the fake thinking delay for the auto-run help.
+    await runCommand("help", { skipThinking: true }); // ← CHANGED (was runCommand("help"))
   }
 
   // Run welcome once boot finishes
