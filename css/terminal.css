@@ -763,3 +763,34 @@ ul.man-body {
    ============================================ */
 
 .hidden { display: none !important; }
+
+/* ---------- Window state modifiers ---------- */
+
+/* Minimized: keep title bar visible, collapse output and input to a thin bar */
+#terminal.minimized {
+  height: auto;
+  max-height: 56px;
+  width: 360px;
+  border-radius: 6px;
+}
+
+#terminal.minimized #output,
+#terminal.minimized .input-line {
+  display: none;
+}
+
+/* Fullscreen: occupy the full viewport */
+#terminal.fullscreen {
+  position: fixed;
+  inset: 12px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  z-index: 150;
+  max-width: none;
+  max-height: none;
+}
+
+#terminal.fullscreen #output {
+  overflow: auto;
+}

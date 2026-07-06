@@ -336,6 +336,78 @@
     input.focus();
   });
 
+  /* ---------- title-bar button behaviors (close/minimize/maximize) ---------- */
+  const btnClose = document.querySelector('.btn-close');
+  const btnMin = document.querySelector('.btn-min');
+  const btnMax = document.querySelector('.btn-max');
+  const terminalEl = document.getElementById('terminal');
+  const bootScreen = document.getElementById('boot-screen');
+
+  function doClose() {
+    terminalEl.classList.add('hidden');
+    if (bootScreen) bootScreen.classList.remove('hidden');
+    input.blur();
+  }
+
+  function doMinimize() {
+    terminalEl.classList.toggle('minimized');
+    // when minimized, keep the title bar visible but collapse output/input
+    if (!terminalEl.classList.contains('minimized')) {
+      // restored: focus input
+      input.focus();
+    }
+  }
+
+  function doMaximize() {
+    terminalEl.classList.toggle('fullscreen');
+    // when entering fullscreen, ensure visible and focused
+    terminalEl.classList.add('visible');
+    input.focus();
+  }
+
+  if (btnClose) btnClose.addEventListener('click', (e) => { e.stopPropagation(); doClose(); });
+  if (btnMin) btnMin.addEventListener('click', (e) => { e.stopPropagation(); doMinimize(); });
+  if (btnMax) btnMax.addEventListener('click', (e) => { e.stopPropagation(); doMaximize(); });
+
+  // Double-click title bar to toggle maximize/fullscreen
+  const titleBar = document.querySelector('.title-bar');
+  if (titleBar) {
+    titleBar.addEventListener('dblclick', (e) => {
+      e.stopPropagation();
+      doMaximize();
+    });
+  }
+
+  // If boot screen is clicked while terminal was closed, restore terminal
+  if (bootScreen) {
+    bootScreen.addEventListener('click', () => {
+      if (terminalEl.classList.contains('hidden')) {
+        terminalEl.classList.remove('hidden');
+        bootScreen.classList.add('hidden');
+        requestAnimationFrame(() => {
+          terminalEl.classList.add('visible');
+          input.focus();
+        });
+      }
+    });
+  }
+
+  // Keyboard shortcuts: Esc to exit fullscreen or minimize state
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (terminalEl.classList.contains('fullscreen')) {
+        terminalEl.classList.remove('fullscreen');
+        input.focus();
+        return;
+      }
+      if (terminalEl.classList.contains('minimized')) {
+        terminalEl.classList.remove('minimized');
+        input.focus();
+        return;
+      }
+    }
+  });
+
   /* ---------- konami code easter egg ---------- */
 
   const KONAMI_SEQUENCE = [
