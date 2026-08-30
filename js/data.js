@@ -15,7 +15,7 @@ const PORTFOLIO_DATA = {
     phone: "+91 7005157909",
     links: {
       linkedin: "https://www.linkedin.com/in/rkabhijit",
-      portfolio: "https://abhijit1102.github.io",
+      portfolio: "https://cloudflare-portfolio.rkabhijit.workers.dev/",
       github: "https://github.com/Abhijit1102"
     }
   },
